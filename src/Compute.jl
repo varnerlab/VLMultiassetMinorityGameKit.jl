@@ -59,11 +59,9 @@ function _trade(model::MySimpleAgentModel, step::Int64)
                     
                 # we have this state in our policy, so let's get the action -
                 action_class = asset_policy[memory_buffer_for_asset];
-
-                @show action_class
                 
                 # update the shares -
-                model.shares[step,i] *= actions[action_class];
+                model.shares[step,i] *= actions[i][action_class];
             end
         end
     end
