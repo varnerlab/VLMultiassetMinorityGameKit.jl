@@ -58,6 +58,8 @@ function _trade(model::MySimpleAgentModel, step::Int64)
 
                 # update the shares -
                 model.shares[step,i] *= actions[i][action_class];
+
+                @show "new", model.shares
             else
                     
                 # we have this state in our policy, so let's get the action -
@@ -65,6 +67,9 @@ function _trade(model::MySimpleAgentModel, step::Int64)
                 
                 # update the shares -
                 model.shares[step,i] *= actions[i][action_class];
+
+                @show "old", model.shares
+
             end
         end
     end
