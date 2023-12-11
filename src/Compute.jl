@@ -9,8 +9,6 @@ function _update_agent_memory(model::MySimpleAgentModel, data::Array{Int64,1})
         # get the memory -
         memory = model.memory[i];
 
-        @show memory
-
         # add the data -
         push!(memory, class);
     end
@@ -52,14 +50,16 @@ function _trade(model::MySimpleAgentModel, step::Int64)
             continue;
         else
            
+            key = convert(Vector{Int64}, memory_buffer_for_asset);
+
             # ok, so we have enough data to make a decision, so let's do it -
             # do we have this state in out policy? -
             asset_policy = policy[i];
-            if (haskey(asset_policy, memory_buffer_for_asset) == false)
+            if (haskey(asset_policy, key) == false)
                 
                 # we don't have this state in our policy, so let's add it -
                 action_class = rand(-1:1);
-                asset_policy[memory_buffer_for_asset] = action_class;
+                asset_policy[key] = action_class;
 
                 # update the shares -
                 Δ = actions[i][action_class];
@@ -71,7 +71,7 @@ function _trade(model::MySimpleAgentModel, step::Int64)
             else
                     
                 # we have this state in our policy, so let's get the action -
-                action_class = asset_policy[memory_buffer_for_asset];
+                action_class = asset_policy[key];
                 Δ = actions[i][action_class];
                 old_shares = model.shares;
                 for j ∈ eachindex(old_shares)
