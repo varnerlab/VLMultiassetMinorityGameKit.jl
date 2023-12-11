@@ -56,13 +56,15 @@ function _trade(model::MySimpleAgentModel, step::Int64)
                 action_class = rand(-1:1);
                 asset_policy[memory_buffer_for_asset] = action_class;
 
+                # update the shares -
+                Δ = actions[i][action_class];
                 old_shares = model.shares;
                 for j ∈ eachindex(old_shares)
-                    old_shares[step,i] = old_shares[step,i]*actions[i][action_class];
+                    old_shares[step,i] = old_shares[step,i]*Δ;
                 end
                 model.shares = old_shares;
 
-                @show "new", asset_policy, memory_buffer_for_asset, action_class, model.shares
+                @show Δ, model.shares,i
                 
                 # # update the shares -
                 # model.shares[step,i] *= actions[i][action_class];
