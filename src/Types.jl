@@ -6,6 +6,7 @@ mutable struct MySimpleAgentModel <: AbstractAgentType
     
     # data members -
     id::UUID.uuid4
+    wealth::Array{Float64,2}
     shares::Array{Int64,2}
     memory::Dict{Int64, CircularBuffer{Int}}
     Q::Array{Dict{CircularBuffer{Int}, Array{Float64,1}},1}

@@ -12,7 +12,22 @@ function _update_agent_memory(model::MySimpleAgentModel, data::Array{Int64,1})
         # add the data -
         push!(memory, class);
     end
+end
 
+function _update_agent_wealth(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64)
+
+    # update the wealth of the agent -
+    for i ∈ eachindex(price)
+        
+        # get the price -
+        p = price[i];
+        
+        # get the shares -
+        n = model.shares[i];
+        
+        # update the wealth -
+        model.wealth[step,i] = n*p;
+    end
 end
 
 function _trade(model::MySimpleAgentModel)
@@ -51,3 +66,4 @@ function _trade(model::MySimpleAgentModel)
 end
 
 (model::MySimpleAgentModel)(data::Array{Int64,1}) = _update_agent_memory(model,data)
+(model::MySimpleAgentModel)(step::Int64, price::Array{Float64,1}) = _update_agent_wealth(model, data, step)

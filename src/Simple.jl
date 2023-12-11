@@ -6,7 +6,7 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
     agents = model.agents;
     number_of_assets = length(data);
 
-    # what is the starting price -
+    # initialize: what is the starting price? (use the close price from the previous day)
     start_price_array = zeros(number_of_assets);
     for k ∈ eachindex(tickers)
         
@@ -14,11 +14,14 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         ticker = tickers[k];
 
         # get the price -
-        price = data[ticker][startindex, :close];
+        price = data[ticker][startindex-1, :close];
 
         # set the price -
         start_price_array[k] = price;
     end
+
+    # update the initial wealth -
+    [a(1, start_price_array) for (_,a) ∈ agents]
 
     # main loop -
     for i ∈ 1:number_of_steps
@@ -34,7 +37,7 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
             ticker = tickers[k];
 
             # get the price -
-            price = data[ticker][j, :close];
+            price = data[ticker][j, :volume_weighted_average_price];
 
             # set the price -
             next_price_array[k] = price;
@@ -66,6 +69,21 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
 
         # make the agents trade -
         [_trade(a) for (_,a) ∈ agents]
-    end
 
+        # update the agent wealth based on the price, and the holdings -
+        [a(i+1, next_price_array) for (_,a) ∈ agents]
+
+        # update the start price (use the close price of the curreent day)
+        for k ∈ eachindex(tickers)
+        
+            # get the ticker -
+            ticker = tickers[k];
+    
+            # get the price -
+            price = data[ticker][j, :close];
+    
+            # set the price -
+            start_price_array[k] = price;
+        end
+    end
 end
