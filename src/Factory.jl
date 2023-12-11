@@ -1,4 +1,4 @@
-function _build(modeltype::Type{T}, data::NamedTuple) where T <: Union{AbstractAgentType, AbstractGameType, AbstractMarketType}
+function _build(modeltype::Type{T}, data::NamedTuple) where T <: Union{AbstractAgentType, AbstractGameType}
     
     # build an empty model
     model = modeltype();
