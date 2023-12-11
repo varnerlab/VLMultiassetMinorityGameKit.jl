@@ -65,5 +65,5 @@ function _trade(model::MySimpleAgentModel)
     end
 end
 
-(model::MySimpleAgentModel)(data::Array{Int64,1}) = _update_agent_memory(model,data)
-(model::MySimpleAgentModel)(step::Int64, price::Array{Float64,1}) = _update_agent_wealth(model, data, step)
+(model::MySimpleAgentModel)(data::Array{Int64,1}) = _update_agent_memory(model, data)
+(model::MySimpleAgentModel)(step::Int64, price::Array{Float64,1}) = _update_agent_wealth(model, price, step)

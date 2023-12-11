@@ -1,5 +1,5 @@
 function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame}, 
-    tickers::Array{String,1}; number_of_steps::Int64 = 10, startindex::Int64 = 1, Δt::Float64 = (1/252),
+    tickers::Array{String,1}; number_of_steps::Int64 = 10, startindex::Int64 = 2, Δt::Float64 = (1/252),
     threshold::Float64 = 0.05)
 
     # initialize -
