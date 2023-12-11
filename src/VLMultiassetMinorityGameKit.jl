@@ -4,7 +4,7 @@ module VLMultiassetMinorityGameKit
     include("Include.jl")
 
     # export types -
-    export AbstractAgentType, AbstractGameType, AbstractMarketType
+    export AbstractAgentType, AbstractGameType
     export MySimpleAgentModel, MySimpleGameModel
 
     # export functions -

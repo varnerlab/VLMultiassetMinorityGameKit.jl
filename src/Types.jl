@@ -1,6 +1,5 @@
 abstract type AbstractAgentType end
 abstract type AbstractGameType end
-abstract type AbstracMarketType end
 
 mutable struct MySimpleAgentModel <: AbstractAgentType
     
