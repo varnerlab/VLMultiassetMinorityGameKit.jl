@@ -5,7 +5,6 @@ abstract type AbstracMarketType end
 mutable struct MySimpleAgentModel <: AbstractAgentType
     
     # data members -
-    id::UUID.uuid4
     wealth::Array{Float64,2}
     shares::Array{Int64,2}
     memory::Dict{Int64, CircularBuffer{Int}}
@@ -20,7 +19,7 @@ end
 mutable struct MySimpleGameModel <: AbstractGameType
     
     # data members -
-    agents::Dict{UUID.uuid4, MySimpleAgentModel}
+    agents::Dict{Int64, MySimpleAgentModel}
        
     # Constructor -
     MySimpleGameModel() = new();
