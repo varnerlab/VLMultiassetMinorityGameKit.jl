@@ -68,7 +68,7 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         [a(class_array) for (_,a) ∈ agents]
 
         # make the agents trade -
-        [_trade(a,j) for (_,a) ∈ agents]
+        [_trade(a,i) for (_,a) ∈ agents]
 
         # update the agent wealth based on the price, and the holdings -
         [a(i+1, next_price_array) for (_,a) ∈ agents]
