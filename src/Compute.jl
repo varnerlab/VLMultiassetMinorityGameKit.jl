@@ -43,6 +43,9 @@ function _trade(model::MySimpleAgentModel, step::Int64)
         memory_buffer_for_asset = memory[i];
         if (isfull(memory_buffer_for_asset) == false)
 
+            # buffer is not full, so skip (no trade, shares stay the same) -
+            model.shares[step+1,i] = model.shares[step,i];
+
             # we don't have enough data to make a decision, so skip -
             continue;
         else
@@ -60,7 +63,7 @@ function _trade(model::MySimpleAgentModel, step::Int64)
                 Δ = actions[i][action_class];
                 old_shares = model.shares;
                 for j ∈ eachindex(old_shares)
-                    old_shares[step,i] = old_shares[step,i]*Δ;
+                    old_shares[step+1,i] = old_shares[step,i]*Δ;
                 end
                 model.shares = old_shares;
 
@@ -76,7 +79,7 @@ function _trade(model::MySimpleAgentModel, step::Int64)
                 action_class = asset_policy[memory_buffer_for_asset];
                 
                 # update the shares -
-                model.shares[step,i] *= actions[i][action_class];
+                model.shares[step+1,i] *= actions[i][action_class];
             end
         end
     end
