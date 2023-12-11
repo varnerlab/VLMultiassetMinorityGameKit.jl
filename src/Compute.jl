@@ -53,8 +53,11 @@ function _trade(model::MySimpleAgentModel, step::Int64)
             if (haskey(asset_policy, memory_buffer_for_asset) == false)
                 
                 # we don't have this state in our policy, so let's add it -
-                asset_policy[memory_buffer_for_asset] = rand(-1:1) # record a random action for next time
+                action_class = rand(-1:1);
+                asset_policy[memory_buffer_for_asset] = action_class;
 
+                # update the shares -
+                model.shares[step,i] *= actions[i][action_class];
             else
                     
                 # we have this state in our policy, so let's get the action -
