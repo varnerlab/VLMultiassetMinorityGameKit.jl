@@ -23,7 +23,7 @@ function _update_agent_wealth(model::MySimpleAgentModel, price::Array{Float64,1}
         p = price[i];
         
         # get the shares -
-        n = model.shares[i];
+        n = model.shares[step,i];
         
         # update the wealth -
         model.wealth[step,i] = n*p;
