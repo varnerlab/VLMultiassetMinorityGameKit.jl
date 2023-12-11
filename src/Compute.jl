@@ -30,7 +30,7 @@ function _update_agent_wealth(model::MySimpleAgentModel, price::Array{Float64,1}
     end
 end
 
-function _trade(model::MySimpleAgentModel)
+function _trade(model::MySimpleAgentModel, step::Int64)
 
     # initialize -
     memory = model.memory;
@@ -59,7 +59,7 @@ function _trade(model::MySimpleAgentModel)
                 action = asset_policy[memory_buffer_for_asset];
                 
                 # update the shares -
-                model.shares[i] *= action;
+                model.shares[step,i] *= action;
             end
         end
     end
