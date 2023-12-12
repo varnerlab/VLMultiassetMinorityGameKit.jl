@@ -50,35 +50,32 @@ function _trade(model::MySimpleAgentModel, step::Int64)
             continue;
         else
            
-            key = convert(Vector{Int64}, memory_buffer_for_asset);
-
             # ok, so we have enough data to make a decision, so let's do it -
+            # we are going to look for this state in our policy
+            statekey = convert(Vector{Int64}, memory_buffer_for_asset);
+
+            
             # do we have this state in out policy? -
             asset_policy = policy[i];
-            if (haskey(asset_policy, key) == false)
+            Δ = nothing;
+            if (haskey(asset_policy, statekey) == false) # we don't have this state in our policy, so let's add it, to the policy, and take a random action -
                 
-                # we don't have this state in our policy, so let's add it -
+                # take a random action -
                 action_class = rand(-1:1);
-                asset_policy[key] = action_class;
-
-                # update the shares -
-                Δ = actions[i][action_class];
-                old_shares = model.shares;
-                for j ∈ eachindex(old_shares)
-                    old_shares[step+1,i] = old_shares[step,i]*Δ;
-                end
-                model.shares = old_shares;
+                asset_policy[statekey] = action_class; # add this state,action to our policy
+                Δ = actions[i][action_class]; # get the change in shares associated with this (state,action)
             else
                     
                 # we have this state in our policy, so let's get the action -
                 action_class = asset_policy[key];
                 Δ = actions[i][action_class];
-                old_shares = model.shares;
-                for j ∈ eachindex(old_shares)
-                    old_shares[step+1,i] = old_shares[step,i]*Δ;
-                end
-                model.shares = old_shares;
             end
+
+            old_shares = model.shares;
+            for j ∈ eachindex(old_shares)
+                old_shares[step+1,i] = old_shares[step,i]*Δ;
+            end
+            model.shares = old_shares;
         end
     end
 end
