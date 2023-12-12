@@ -56,11 +56,11 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
 
             # what class are we in? -
             if (log_return > threshold)
-                class_array[k] = 1;
+                class_array[k] = 1; 
             elseif (log_return < -threshold)
-                class_array[k] = -1;
+                class_array[k] = 2;
             else
-                class_array[k] = 0;
+                class_array[k] = 3;
             end
         end
 

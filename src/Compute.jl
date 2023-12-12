@@ -64,10 +64,12 @@ function _trade(model::MySimpleAgentModel, step::Int64)
                 action_class = rand(-1:1);
                 asset_policy[statekey] = action_class; # add this state,action to our policy
                 Δ = actions[i][action_class]; # get the change in shares associated with this (state,action)
+
+                # Finally, update our list of states (we add them )
             else
                     
                 # we have this state in our policy, so let's get the action -
-                action_class = asset_policy[key];
+                action_class = asset_policy[statekey];
                 Δ = actions[i][action_class];
             end
 
