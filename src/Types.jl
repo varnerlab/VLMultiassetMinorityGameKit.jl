@@ -12,7 +12,7 @@ mutable struct MySimpleAgentModel <: AbstractAgentType
     actions::Union{Nothing, Array{Dict{Int64, Float64}, 1}}
     
     states::Union{Nothing, Dict{Int64, Vector{Int64}}} # this is a map from the state to the index in the policy
-    connections::Union{Nothing, Dict{Vector{Int64}, Int64}}
+    coordinates::Union{Nothing, Dict{Vector{Int64}, Int64}}
 
        
     # Constructor -
