@@ -87,10 +87,11 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
 
             # update the Q table -
             s = coordinates[statekey];
-            r = model.wealth[step+1,i];
+            budget = model.budget;
+            r = (1/budget)*model.wealth[step+1,i];
 
             # generate a random next state?
-            s′ = rand(1:size(Q,1)); # I don't know what the next state is, so I will just pick one at random
+            s′ = rand(1:size(Q,1)); # I don't know what the next state is, so I will just pick one at random. This is not correct
 
             Q[s,aᵢ] = Q[s,aᵢ] + α*(r + γ*maximum(Q[s′,:]) - Q[s,aᵢ]);
             model.Q = Q;
