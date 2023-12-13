@@ -22,7 +22,7 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
     end
 
     # update the initial wealth -
-    [a(1, start_price_array) for (_,a) ∈ agents]
+    [a(0, start_price_array) for (_,a) ∈ agents]
 
     # main loop -
     for i ∈ 1:number_of_steps
@@ -56,12 +56,12 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
             log_return = (1/Δt)*log(price / start_price);
 
             # what class are we in? -
-            if (log_return > threshold)
+            if (log_return > threshold) # up => class 1
                 class_array[k] = 1; 
-            elseif (log_return < -threshold)
+            elseif (log_return < -threshold) # down => class 2
                 class_array[k] = 2;
             else
-                class_array[k] = 3;
+                class_array[k] = 3; # flat => class 3
             end
         end
 
