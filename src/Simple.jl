@@ -21,9 +21,6 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         start_price_array[k] = price;
     end
 
-    # update the initial wealth -
-    [a(0, start_price_array) for (_,a) ∈ agents]
-
     # main loop -
     for i ∈ 1:number_of_steps
         
