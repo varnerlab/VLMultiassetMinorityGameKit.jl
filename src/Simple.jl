@@ -49,7 +49,7 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         end
 
         # update the data on the agents -
-        [a(s) for (_,a) ∈ agents] # this will update the memory for the current state -
+        [_update_agent_memory(a, s) for (_,a) ∈ agents] # this will update the memory for the current state -
 
         # make the agents trade -
         [trade(a, vwap_price_array, i, ϵ = ϵ) for (_,a) ∈ agents]
