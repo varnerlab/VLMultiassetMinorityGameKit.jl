@@ -13,6 +13,7 @@ mutable struct MySimpleAgentModel <: AbstractAgentType
     coordinates::Union{Nothing, Dict{Vector{Int64}, Int64}} # this is a map from the state vector to the index
     α::Float64 # learning rate
     γ::Float64 # discount factor
+    budget::Float64 # budget
        
     # Constructor -
     MySimpleAgentModel() = new();
