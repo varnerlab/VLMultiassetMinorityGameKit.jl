@@ -9,6 +9,8 @@ function _update_agent_memory(model::MySimpleAgentModel, data::Array{Int64,1})
         # get the memory -
         memory = model.memory[i];
 
+        @show memory
+
         # add the data -
         push!(memory, class);
     end
