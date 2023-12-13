@@ -30,6 +30,9 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
          # what class are we in?  compute the returns, hard code above or below a threshold -
         s = Array{Int64,1}(undef, number_of_assets);
         for k ∈ eachindex(tickers)
+
+            # get the ticker -
+            ticker = tickers[k];
         
             # get the price -
             start_price = data[ticker][j-1, :close];
