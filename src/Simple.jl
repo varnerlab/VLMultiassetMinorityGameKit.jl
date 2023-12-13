@@ -68,10 +68,10 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         [a(class_array) for (_,a) ∈ agents]
 
         # make the agents trade -
-        [_trade(a,i) for (_,a) ∈ agents]
+        [trade(a,i) for (_,a) ∈ agents]
 
-        # update the agent wealth based on the price, and the holdings -
-        [a(i+1, next_price_array) for (_,a) ∈ agents]
+        # update the Q for the agents -
+        [update_agent_brain(a) for (_,a) ∈ agents]
 
         # update the start price (use the close price of the curreent day)
         for k ∈ eachindex(tickers)

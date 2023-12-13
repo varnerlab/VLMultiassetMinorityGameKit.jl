@@ -11,7 +11,8 @@ mutable struct MySimpleAgentModel <: AbstractAgentType
     Q::Union{Nothing, Array{Float64,2}}
     states::Union{Nothing, Dict{Int64, Vector{Int64}}} # this is a map from index to the state vector
     coordinates::Union{Nothing, Dict{Vector{Int64}, Int64}} # this is a map from the state vector to the index
-
+    α::Float64 # learning rate
+    γ::Float64 # discount factor
        
     # Constructor -
     MySimpleAgentModel() = new();
