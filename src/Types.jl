@@ -22,6 +22,7 @@ mutable struct MySimpleGameModel <: AbstractGameType
     
     # data members -
     agents::Dict{Int64, MySimpleAgentModel}
+    ϵ::Float64 # exploration rate
        
     # Constructor -
     MySimpleGameModel() = new();
