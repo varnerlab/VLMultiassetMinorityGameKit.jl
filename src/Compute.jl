@@ -87,8 +87,7 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
 
             # update the Q table -
             s = coordinates[statekey];
-            budget = model.budget;
-            r = (1/budget)*model.wealth[step+1,i];
+            r = model.wealth[step+1,i];
             Q[s,aᵢ] = Q[s,aᵢ] + α*(r + γ*maximum(Q[s,:]) - Q[s,aᵢ]);
             model.Q = Q;
         end
