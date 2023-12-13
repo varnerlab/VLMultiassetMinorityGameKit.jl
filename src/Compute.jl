@@ -82,7 +82,7 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
             end
             model.shares = old_shares;
 
-            # update the wealth array -
+            # update the wealth array (with new shares)
             _update_agent_wealth(model, price, step);
 
             # update the Q table -
@@ -91,8 +91,9 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
             r = (1/budget)*model.wealth[step+1,i];
 
             # generate a random next state?
-            s′ = rand(1:size(Q,1)); # I don't know what the next state is, so I will just pick one at random. This is not correct
+            s′ = rand(1:size(Q,1)); # I don't know what the next state will be, so I will just pick one at random. Not sure about this?
 
+            # update the Q table -
             Q[s,aᵢ] = Q[s,aᵢ] + α*(r + γ*maximum(Q[s′,:]) - Q[s,aᵢ]);
             model.Q = Q;
         end

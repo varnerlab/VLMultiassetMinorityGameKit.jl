@@ -7,20 +7,6 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
     ϵ = model.ϵ;
     number_of_assets = length(data);
 
-    # initialize: what is the starting price? (use the close price from the previous day)
-    start_price_array = zeros(number_of_assets);
-    for k ∈ eachindex(tickers)
-        
-        # get the ticker -
-        ticker = tickers[k];
-
-        # get the price -
-        price = data[ticker][startindex-1, :close];
-
-        # set the price -
-        start_price_array[k] = price;
-    end
-
     # main loop -
     for i ∈ 1:number_of_steps
         
@@ -46,8 +32,8 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         for k ∈ eachindex(tickers)
         
             # get the price -
-            start_price = start_price_array[k];
-            next_price = vwap_price_array[k];
+            start_price = data[ticker][j-1, :close];
+            next_price = data[ticker][j, :volume_weighted_average_price];
 
             # compute the return -
             log_return = (1/Δt)*log(next_price / start_price);
@@ -67,18 +53,5 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
 
         # make the agents trade -
         [trade(a, vwap_price_array, i, ϵ = ϵ) for (_,a) ∈ agents]
-
-        # update the start price (use the close price of the curreent day)
-        for k ∈ eachindex(tickers)
-        
-            # get the ticker -
-            ticker = tickers[k];
-    
-            # get the price -
-            price = data[ticker][j, :close];
-    
-            # set the price -
-            start_price_array[k] = price;
-        end
     end
 end

@@ -7,6 +7,7 @@ mutable struct MySimpleAgentModel <: AbstractAgentType
     wealth::Union{Nothing,Array{Float64,2}}
     shares::Union{Nothing,Array{Float64,2}}
     memory::Union{Nothing, Dict{Int64, CircularBuffer{Int}}}
+
     actions::Union{Nothing, Array{Dict{Int64, Float64}, 1}}
     Q::Union{Nothing, Array{Float64,2}}
     states::Union{Nothing, Dict{Int64, Vector{Int64}}} # this is a map from index to the state vector
