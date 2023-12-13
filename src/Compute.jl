@@ -49,6 +49,7 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
 
             # buffer is not full, so skip (no trade, shares stay the same) -
             model.shares[step+1,i] = model.shares[step,i];
+            _update_agent_wealth(model, price, step);
 
             # we don't have enough data to make a decision, so skip -
             continue;
