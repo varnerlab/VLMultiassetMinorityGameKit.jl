@@ -52,6 +52,7 @@ function _update_agent_wealth(model::MySimpleAgentModel, price::Array{Float64,1}
     end
 end
 
+
 function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; ϵ::Float64=0.1)
 
     # initialize -
@@ -72,6 +73,9 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
 
             # buffer is not full, so skip (no trade, shares stay the same) -
             model.shares[step+1,i] = model.shares[step,i];
+            model.balance[i] = model.balance[i]; # no change
+            
+            # update the wealth array (same shares)
             _update_agent_wealth(model, price, step);
 
             # we don't have enough data to make a decision, so skip -
@@ -98,12 +102,18 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
             # ok, so we have an action, let's take it -
             Δ = actions[i][aᵢ];
             
+
             # we make the trade, and then see what happens -
             old_shares = model.shares;
+            dn = Array{Float64,1}(undef, length(price));
             for j ∈ eachindex(old_shares)
                 old_shares[step+1,i] = old_shares[step,i]*Δ;
+                dn[j] = (Δ - 1)*old_shares[step,i];
             end
             model.shares = old_shares;
+
+            # compute the new balance -
+            new_balance = model.balance[step] - sum(price.*dn);
 
             # update the wealth array (with new shares)
             _update_agent_wealth(model, price, step);
@@ -111,7 +121,7 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
             # update the Q table -
             s = coordinates[statekey];
             budget = model.budget;
-            r = (1/budget)*model.wealth[step+1,i];
+            r = (1/budget)*(model.wealth[step+1,i] - max(0, new_balance));
 
             # generate a random next state?
             next_memory_buffer_for_asset = nextmemory[i];
@@ -121,6 +131,9 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
             # update the Q table -
             Q[s,aᵢ] = Q[s,aᵢ] + α*(r + γ*maximum(Q[s′,:]) - Q[s,aᵢ]);
             model.Q = Q;
+
+            # finally update the balance -
+            model.balance[step+1] = new_balance;
         end
     end
 end

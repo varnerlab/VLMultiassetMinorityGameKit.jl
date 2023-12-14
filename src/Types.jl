@@ -6,7 +6,7 @@ mutable struct MySimpleAgentModel <: AbstractAgentType
     # data members -
     wealth::Union{Nothing,Array{Float64,2}}
     shares::Union{Nothing,Array{Float64,2}}
-    
+
     currentmemory::Union{Nothing, Dict{Int64, CircularBuffer{Int}}}
     nextmemory::Union{Nothing, Dict{Int64, CircularBuffer{Int}}}
 
@@ -17,7 +17,8 @@ mutable struct MySimpleAgentModel <: AbstractAgentType
     α::Float64 # learning rate
     γ::Float64 # discount factor
     budget::Float64 # budget
-       
+    balance::Dict{Int64, Float64} # cash balance   
+
     # Constructor -
     MySimpleAgentModel() = new();
 end
