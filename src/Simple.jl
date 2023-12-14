@@ -14,8 +14,6 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         # get the ticker -
         ticker = tickers[k];
 
-        @show (k, number_of_assets, ticker)
-
         # get the price -
         p₁ = data[ticker][startindex-2, :close];
         p₂ = data[ticker][startindex-1, :close];
