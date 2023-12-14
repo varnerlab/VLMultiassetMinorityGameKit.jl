@@ -116,7 +116,7 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
             # compute the new balance -
             @show  model.balance
 
-            new_balance = model.balance[step] - dn*p;
+            new_balance = model.balance[step-1] - dn*p;
 
             # update the wealth array (with new shares)
             _update_agent_wealth(model, price, step);
