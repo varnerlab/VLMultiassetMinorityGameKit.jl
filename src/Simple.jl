@@ -7,6 +7,8 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
     ϵ = model.ϵ;
     number_of_assets = length(data);
 
+    @show number_of_assets
+
     # compute the start state -
     s = Array{Int64,1}(undef, number_of_assets);
     for k ∈ eachindex(tickers)
