@@ -113,28 +113,48 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
             dn = (Δ - 1)*old_shares[step,i];
             p = price[i];
 
-            # update the balance -
-            new_balance = model.balance[step-1] - dn*p; # index>??>
-
-            # update the wealth array (with new shares)
-            _update_agent_wealth(model, price, step);
-
-            # update the Q table -
-            s = coordinates[statekey];
-            budget = model.budget;
-            r = (1/budget)*(model.wealth[step+1,i] - 100000.0*max(0, -1*new_balance));
-
             # generate a random next state?
             next_memory_buffer_for_asset = nextmemory[i];
             nextstatekey = convert(Vector{Int64}, next_memory_buffer_for_asset);
             s′ = coordinates[nextstatekey];
 
-            # update the Q table -
-            Q[s,aᵢ] = Q[s,aᵢ] + α*(r + γ*maximum(Q[s′,:]) - Q[s,aᵢ]);
-            model.Q = Q;
+            # update the balance -
+            new_balance = model.balance[step-1] - dn*p; # index>??>
+            if (new_balance < 0.0)
+                
+                # we can't have a negative balance, so we need to cancel this order
+                model.shares[step+1,i] = model.shares[step,i];
+                model.balance[step] = model.balance[step-1]; # no change
+            
+                # update the wealth array (same shares)
+                _update_agent_wealth(model, price, step);
+                
+                # we are forcing to hold, because we can't have a negative balance -
+                aᵢ = 2; # hold
 
-            # finally update the balance -
-            model.balance[step] = new_balance;
+                # update -
+                Q[s,aᵢ] = Q[s,aᵢ] + α*(r + γ*maximum(Q[s′,:]) - Q[s,aᵢ]);
+                model.Q = Q;
+
+            else
+               
+                # we are ok - make the move
+
+                # update the wealth array (with new shares)
+                _update_agent_wealth(model, price, step);
+
+                # update the Q table -
+                s = coordinates[statekey];
+                budget = model.budget;
+                r = (1/budget)*(model.wealth[step+1,i] - 100000.0*max(0, -1*new_balance));
+
+                # update the Q table -
+                Q[s,aᵢ] = Q[s,aᵢ] + α*(r + γ*maximum(Q[s′,:]) - Q[s,aᵢ]);
+                model.Q = Q;
+
+                # finally update the balance -
+                model.balance[step] = new_balance;
+            end
         end
     end
 end
