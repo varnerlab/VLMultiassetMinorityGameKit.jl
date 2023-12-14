@@ -69,6 +69,6 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         [trade(a, vwap_price_array, i, ϵ = ϵ) for (_,a) ∈ agents]
 
         # now, update the memory for the next step -
-        foreach((_, a) -> _memory_swap(a), agents);
+        foreach(a -> _memory_swap(a), values(agents));
     end
 end
