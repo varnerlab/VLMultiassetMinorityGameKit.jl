@@ -148,8 +148,7 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
                 _update_agent_wealth(model, price, step);
 
                 # update the Q table -
-                budget = model.budget;
-                r = (1/budget)*(model.wealth[step+1,i] - 100000.0*max(0, -1*new_balance));
+                r = (model.wealth[step+1,i] + new_balance)
 
                 # update the Q table -
                 Q[s,aᵢ] = Q[s,aᵢ] + α*(r + γ*maximum(Q[s′,:]) - Q[s,aᵢ]);
