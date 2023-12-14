@@ -1,4 +1,4 @@
-function _update_agent_memory(model::MySimpleAgentModel, data::Array{Int64,1})
+function _update_current_agent_memory(model::MySimpleAgentModel, data::Array{Int64,1})
 
     # ok, so we have the "class" of each of the tickers, add this data to the agent's memory -
     for i ∈ eachindex(data)
@@ -7,11 +7,34 @@ function _update_agent_memory(model::MySimpleAgentModel, data::Array{Int64,1})
         class = data[i];
         
         # get the memory -
-        memory = model.memory[i];
+        memory = model.currentmemory[i];
 
         # add the data -
         push!(memory, class);
     end
+end
+
+function _update_next_agent_memory(model::MySimpleAgentModel, data::Array{Int64,1})
+
+    # ok, so we have the "class" of each of the tickers, add this data to the agent's memory -
+    for i ∈ eachindex(data)
+        
+        # get the class -
+        class = data[i];
+        
+        # get the memory -
+        memory = model.nextmemory[i];
+
+        # add the data -
+        push!(memory, class);
+    end
+end
+
+function _memory_swap(model::MySimpleAgentModel)
+
+    # swap the memory buffers -
+    model.currentmemory = model.nextmemory;
+    model.nextmemory = nothing;
 end
 
 function _update_agent_wealth(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64)
@@ -33,7 +56,8 @@ end
 function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; ϵ::Float64=0.1)
 
     # initialize -
-    memory = model.memory;
+    memory = model.currentmemory;
+    nextmemory = model.nextmemory; # this is the memory buffer we will use to store the next state
     actions = model.actions;
     coordinates = model.coordinates;
     Q = model.Q; # get our Q table, this is the agent's brain
@@ -91,7 +115,9 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
             r = (1/budget)*model.wealth[step+1,i];
 
             # generate a random next state?
-            s′ = rand(1:size(Q,1)); # I don't know what the next state will be, so I will just pick one at random. Not sure about this?
+            next_memory_buffer_for_asset = nextmemory[i];
+            nextstatekey = convert(Vector{Int64}, next_memory_buffer_for_asset);
+            s′ = coordinates[nextstatekey];
 
             # update the Q table -
             Q[s,aᵢ] = Q[s,aᵢ] + α*(r + γ*maximum(Q[s′,:]) - Q[s,aᵢ]);
@@ -100,6 +126,4 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
     end
 end
 
-
-(model::MySimpleAgentModel)(data::Array{Int64,1}) = _update_agent_memory(model, data)
 (model::MySimpleAgentModel)(step::Int64, price::Array{Float64,1}) = _update_agent_wealth(model, price, step)

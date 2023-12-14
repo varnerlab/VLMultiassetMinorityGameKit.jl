@@ -6,7 +6,9 @@ mutable struct MySimpleAgentModel <: AbstractAgentType
     # data members -
     wealth::Union{Nothing,Array{Float64,2}}
     shares::Union{Nothing,Array{Float64,2}}
-    memory::Union{Nothing, Dict{Int64, CircularBuffer{Int}}}
+    
+    currentmemory::Union{Nothing, Dict{Int64, CircularBuffer{Int}}}
+    nextmemory::Union{Nothing, Dict{Int64, CircularBuffer{Int}}}
 
     actions::Union{Nothing, Array{Dict{Int64, Float64}, 1}}
     Q::Union{Nothing, Array{Float64,2}}
