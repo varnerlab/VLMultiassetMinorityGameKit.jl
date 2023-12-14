@@ -113,7 +113,10 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
             dn = (Δ - 1)*old_shares[step,i];
             p = price[i];
 
-            # generate a random next state?
+            # current state -
+            s = coordinates[statekey];
+
+            # next state -
             next_memory_buffer_for_asset = nextmemory[i];
             nextstatekey = convert(Vector{Int64}, next_memory_buffer_for_asset);
             s′ = coordinates[nextstatekey];
@@ -131,6 +134,7 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
                 
                 # we are forcing to hold, because we can't have a negative balance -
                 aᵢ = 2; # hold
+                r = 0.0; # this is a penalty for having a negative balance, because we hold
 
                 # update -
                 Q[s,aᵢ] = Q[s,aᵢ] + α*(r + γ*maximum(Q[s′,:]) - Q[s,aᵢ]);
@@ -144,7 +148,6 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
                 _update_agent_wealth(model, price, step);
 
                 # update the Q table -
-                s = coordinates[statekey];
                 budget = model.budget;
                 r = (1/budget)*(model.wealth[step+1,i] - 100000.0*max(0, -1*new_balance));
 
