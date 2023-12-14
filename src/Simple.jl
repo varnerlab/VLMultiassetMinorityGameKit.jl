@@ -24,6 +24,9 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         # encode -
         push!(s, _encode(log_return, threshold = threshold));
     end
+
+    @show s;
+
     foreach(a -> _update_current_agent_memory(a,s), values(agents));
 
     # main loop -
