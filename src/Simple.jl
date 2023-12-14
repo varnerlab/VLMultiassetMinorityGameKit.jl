@@ -7,8 +7,11 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
     ϵ = model.ϵ;
     number_of_assets = length(data);
 
+    @show number_of_assets
+
     # compute the start state -
     s = Array{Int64,1}(undef, number_of_assets);
+    @show s
     for k ∈ eachindex(tickers)
         
         # get the ticker -
@@ -25,7 +28,7 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         push!(s, _encode(log_return, threshold = threshold));
     end
 
-    @show s;
+    @show s
 
     foreach(a -> _update_current_agent_memory(a,s), values(agents));
 
