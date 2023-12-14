@@ -122,7 +122,7 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
             # update the Q table -
             s = coordinates[statekey];
             budget = model.budget;
-            r = (1/budget)*(model.wealth[step+1,i] - max(0, new_balance));
+            r = (1/budget)*(model.wealth[step+1,i] - 1000*max(0, -1*new_balance));
 
             # generate a random next state?
             next_memory_buffer_for_asset = nextmemory[i];
