@@ -105,17 +105,16 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
 
             # we make the trade, and then see what happens -
             old_shares = model.shares;
-            dn = 0.0;
-            for j ∈ eachindex(old_shares)
-                old_shares[step+1,i] = old_shares[step,i]*Δ;
-                dn = (Δ - 1)*old_shares[step,i];
-
-                @show (j, dn)
-            end
+            old_shares[step+1,i] = old_shares[step,i]*Δ;
             model.shares = old_shares;
 
+            # what is the change in the number of shares?  we need to compute this to update the balance -
+            dn = 0.0;
+            dn = (Δ - 1)*old_shares[step,i];
+            p = price[i];
+
             # compute the new balance -
-            new_balance = model.balance[step] - sum(price.*dn);
+            new_balance = model.balance[step] - dn*p;
 
             # update the wealth array (with new shares)
             _update_agent_wealth(model, price, step);
