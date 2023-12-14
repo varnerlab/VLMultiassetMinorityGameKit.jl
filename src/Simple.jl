@@ -24,7 +24,7 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         # encode -
         push!(s, _encode(log_return, threshold = threshold));
     end
-    [_update_current_agent_memory(a,s) for (_,a) ∈ agents];
+    foreach(a -> _update_current_agent_memory(a,s), value(agents));
 
     # main loop -
     for i ∈ 1:number_of_steps
