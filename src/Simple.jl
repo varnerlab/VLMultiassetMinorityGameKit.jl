@@ -28,6 +28,8 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
 
     # main loop -
     for i ∈ 1:number_of_steps
+
+        @info "Starting step $(i) ... "
         
         # compute the index -
         j  = startindex + (i - 1);
