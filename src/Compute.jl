@@ -105,10 +105,12 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
 
             # we make the trade, and then see what happens -
             old_shares = model.shares;
-            dn = Array{Float64,1}(undef, length(price));
+            dn = 0.0;
             for j ∈ eachindex(old_shares)
                 old_shares[step+1,i] = old_shares[step,i]*Δ;
-                dn[j] = (Δ - 1)*old_shares[step,i];
+                dn = (Δ - 1)*old_shares[step,i];
+
+                @show dn
             end
             model.shares = old_shares;
 
