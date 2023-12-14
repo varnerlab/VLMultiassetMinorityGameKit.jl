@@ -24,7 +24,7 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         # encode -
         push!(s, _encode(log_return, threshold = threshold));
     end
-    foreach((_, a) -> _update_current_agent_memory(a,s), agents);
+    foreach(a -> _update_current_agent_memory(a,s), values(agents));
 
     # main loop -
     for i ∈ 1:number_of_steps
@@ -63,7 +63,7 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
             # encode -
             push!(s′, _encode(log_return, threshold = threshold));
         end
-        foreach((_, a) -> _update_next_agent_memory(a,s′), agents);
+        foreach(a -> _update_next_agent_memory(a,s′), value(agents));
 
         # make the agents trade -
         [trade(a, vwap_price_array, i, ϵ = ϵ) for (_,a) ∈ agents]
