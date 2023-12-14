@@ -30,11 +30,10 @@ function _update_next_agent_memory(model::MySimpleAgentModel, data::Array{Int64,
     end
 end
 
-function _memory_swap(model::MySimpleAgentModel, number_of_assets::Int64)
+function _memory_swap(model::MySimpleAgentModel)
 
     # swap the memory buffers -
-    model.currentmemory = model.nextmemory;
-    model.nextmemory = CircularBuffer{Int}(number_of_assets);
+    model.currentmemory = deepcopy(model.nextmemory);
 end
 
 function _update_agent_wealth(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64)
