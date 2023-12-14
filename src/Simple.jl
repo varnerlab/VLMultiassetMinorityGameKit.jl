@@ -7,14 +7,14 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
     ϵ = model.ϵ;
     number_of_assets = length(data);
 
-    @show number_of_assets
-
     # compute the start state -
     s = Array{Int64,1}(undef, number_of_assets);
     for k ∈ eachindex(tickers)
         
         # get the ticker -
         ticker = tickers[k];
+
+        @show (k, number_of_assets, ticker)
 
         # get the price -
         p₁ = data[ticker][startindex-2, :close];
