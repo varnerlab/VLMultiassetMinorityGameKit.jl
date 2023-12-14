@@ -7,11 +7,8 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
     ϵ = model.ϵ;
     number_of_assets = length(data);
 
-    @show number_of_assets
-
     # compute the start state -
     s = Array{Int64,1}(undef, number_of_assets);
-    @show s
     for k ∈ eachindex(tickers)
         
         # get the ticker -
@@ -25,11 +22,8 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
         log_return = (1/Δt)*log(p₂ / p₁);
 
         # encode -
-        push!(s, _encode(log_return, threshold = threshold));
+        s[k] = _encode(log_return, threshold = threshold);
     end
-
-    @show s
-
     foreach(a -> _update_current_agent_memory(a,s), values(agents));
 
     # main loop -
@@ -67,9 +61,8 @@ function evaluate(model::MySimpleGameModel, data::Dict{String, DataFrame},
             log_return = (1/Δt)*log(next_price / start_price);
             
             # encode -
-            push!(s′, _encode(log_return, threshold = threshold));
+            s′[k] = _encode(log_return, threshold = threshold);
         end
-        #[_update_next_agent_memory(a,s′) for (_,a) ∈ agents];
         foreach(a -> _update_next_agent_memory(a,s′), values(agents));
 
         # make the agents trade -
