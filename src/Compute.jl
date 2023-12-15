@@ -60,6 +60,7 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
     nextmemory = model.nextmemory; # this is the memory buffer we will use to store the next state
     actions = model.actions;
     coordinates = model.coordinates;
+
     Q = model.Q; # get our Q table, this is the agent's brain
     γ = model.γ; # discount factor
     α = model.α; # learning rate
