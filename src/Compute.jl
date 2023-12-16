@@ -103,7 +103,6 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
             # ok, so we have an action, let's take it -
             Δ = actions[i][aᵢ];
             
-
             # we make the trade, and then see what happens -
             old_shares = model.shares;
             old_shares[step+1,i] = old_shares[step,i]*Δ;
@@ -149,7 +148,7 @@ function trade(model::MySimpleAgentModel, price::Array{Float64,1}, step::Int64; 
                 _update_agent_wealth(model, price, step);
 
                 # update the Q table -
-                r = (model.wealth[step+1,i] + new_balance)
+                r = (model.shares[step+1,1]*model.wealth[step+1,i] + new_balance)
 
                 # update the Q table -
                 Q[s,aᵢ] = Q[s,aᵢ] + α*(r + γ*maximum(Q[s′,:]) - Q[s,aᵢ]);
